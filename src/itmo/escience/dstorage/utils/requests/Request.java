@@ -38,5 +38,4 @@ public class Request {
         return this.json;
     }
     public StorageActionType getActionType(){return action;}
-
 }

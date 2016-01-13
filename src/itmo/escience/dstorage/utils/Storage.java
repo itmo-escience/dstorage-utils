@@ -3,9 +3,12 @@ package itmo.escience.dstorage.utils;
 import itmo.escience.dstorage.utils.agent.AgentRequestDownload;
 import itmo.escience.dstorage.utils.agent.AgentRequestUpload;
 import itmo.escience.dstorage.utils.agent.AgentResponse;
+import itmo.escience.dstorage.utils.enums.StorageLevel;
 import itmo.escience.dstorage.utils.network.HttpConn;
 import itmo.escience.dstorage.utils.requests.DownloadRequest;
 import itmo.escience.dstorage.utils.requests.MetadataRequest;
+import itmo.escience.dstorage.utils.requests.MoveFileRequest;
+import itmo.escience.dstorage.utils.requests.MoveLevelRequest;
 import itmo.escience.dstorage.utils.requests.Request;
 import itmo.escience.dstorage.utils.requests.UploadRequest;
 import itmo.escience.dstorage.utils.responses.DownloadResponse;
@@ -127,5 +130,22 @@ public class Storage {
             return response;
         }
         return response;
+    }
+    public Response moveFileLevelByName(String name,String host,StorageLevel lvlfrom,StorageLevel lvlto){
+        MoveLevelRequest request=new MoveLevelRequest();        
+        request.setName(name);
+        request.setHost(host);
+        request.setLvlFrom(lvlfrom);
+        request.setLvlTo(lvlto);        
+        return execute(request);
+    }
+    public Response moveFileByName(String name,String fromhost,String tohost,StorageLevel lvlfrom,StorageLevel lvlto){
+        MoveFileRequest request=new MoveFileRequest();        
+        request.setName(name);
+        request.setFromHost(fromhost);
+        request.setToHost(tohost);
+        request.setLvlFrom(lvlfrom);
+        request.setLvlTo(lvlto);        
+        return execute(request);
     }
 }
