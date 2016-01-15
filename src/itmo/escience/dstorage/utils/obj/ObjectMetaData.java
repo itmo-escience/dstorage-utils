@@ -7,8 +7,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -36,7 +38,7 @@ public class ObjectMetaData {
     private long descendants;
     private long version;
     private long state;
-    private List<String> agents=new ArrayList();
+    private Map<String,List<Long>> agents=new HashMap();//agents with levels 
     private String defaultCT;
     
     public void setObjType(StorageObjectType t){this.type=t;}
@@ -55,7 +57,7 @@ public class ObjectMetaData {
     public void setDescendants(long des){this.descendants=des;}
     public void setVersion(long ver){this.version=ver;}
     public void setState(long st){this.state=st;}
-    public void setAgents(List<String> ips){this.agents=ips;}
+    public void setAgents(Map<String,List<Long>> ips){this.agents=ips;}
     public void setDefaultCT(String ct){this.defaultCT=ct;}
     
     public ObjectMetaData(){
@@ -134,18 +136,21 @@ public class ObjectMetaData {
                         meta.setState((Long)jo.get(key));                        
                         break;
                     case "AGENTIP": 
-                        JSONArray agentList = new JSONArray();                        
-                        agentList = (JSONArray) jo.get(key);
+                        JSONObject agentList = new JSONObject();                        
+                        agentList = (JSONObject) jo.get(key);
                         if(agentList==null)break;
-                        Iterator itAgents=agentList.iterator();
-                        List<String> lAgents=new ArrayList();
+                        Iterator itAgents=agentList.keySet().iterator(); 
+                        Map<String,List<Long>> lAgents=new HashMap();
                         while(itAgents.hasNext()){
-                            JSONObject ja=(JSONObject)itAgents.next();
-                            Iterator<?> itOb=ja.keySet().iterator();
-                            while(itOb.hasNext()){
-                                String k=(String)itOb.next();
-                                lAgents.add(k+":"+(Long)ja.get(k));
+                            String ja=(String)itAgents.next();
+                            JSONArray levels=(JSONArray)agentList.get(ja);
+                            Iterator<?> itLvl=levels.iterator();
+                            List<Long> agLevels=new ArrayList();
+                            while(itLvl.hasNext()){
+                                long k=(Long)itLvl.next();
+                                agLevels.add(k);
                             }
+                            lAgents.put(ja, agLevels);
                         }                       
                         meta.setAgents(lAgents);                        
                         break;

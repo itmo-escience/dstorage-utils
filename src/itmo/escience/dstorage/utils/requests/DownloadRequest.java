@@ -14,7 +14,7 @@ public class DownloadRequest extends Request{
         super();
         action=StorageActionType.GET;
         type=StorageObjectType.f;
-        method=StorageMethod.GET;
+        method=StorageMethod.PUT;
     }
     //TODO builder
     public void setName(String name){

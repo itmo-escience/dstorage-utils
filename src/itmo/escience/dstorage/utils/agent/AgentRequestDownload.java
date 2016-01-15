@@ -31,6 +31,7 @@ public class AgentRequestDownload {
     private int port;
     private int storageLevel=-2;
     private InputStream fileInputStream;
+    private HttpConn httpAgent;
     public AgentRequestDownload(String uri, String obj_id){
         setUri(uri);
         this.obj_id=obj_id;               
@@ -65,18 +66,18 @@ public class AgentRequestDownload {
     }
     public AgentResponse execute(){
         AgentResponse response=null;
-        HttpConn httpAgent = new HttpConn();
+        httpAgent = new HttpConn();
         try{            
             httpAgent.setup(host,Integer.toString(port)); 
             httpAgent.setMethod(method,obj_id);
-            httpAgent.setEntity((new InputStreamEntity(fis, -1)));
+            //httpAgent.setEntity((new InputStreamEntity(fis, -1)));
             httpAgent.setHeader("Ticket", ticket);
             httpAgent.setHeader("Sign", sign);    
             if(this.storageLevel!=-2)httpAgent.setHeader("StorageLevel", Integer.toString(this.storageLevel));
             httpAgent.connect();
             this.fileInputStream=httpAgent.getStreamResponse();
-            response=new AgentResponse(httpAgent.getHttpResponse());
-            httpAgent.close();
+            //response=new AgentResponse(httpAgent.getHttpResponse());
+            //httpAgent.close();
         } catch (UnknownHostException ex) {
             Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
@@ -87,4 +88,5 @@ public class AgentRequestDownload {
     }
     public StorageActionType getType(){return type;}
     public InputStream getFileStream(){return fileInputStream;}
+    public void close(){httpAgent.close();}
 }

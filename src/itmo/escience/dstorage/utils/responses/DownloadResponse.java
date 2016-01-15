@@ -52,7 +52,7 @@ public class DownloadResponse extends Response {
                     agentUri=(String)json.get(key);
                     break;
                 case "LVL": 
-                    level=(int)json.get(key);
+                    level=((Long)json.get(key)).intValue();
                     break;    
             }
         }        

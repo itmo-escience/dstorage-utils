@@ -4,12 +4,13 @@ import itmo.escience.dstorage.utils.enums.StorageLevel;
 import itmo.escience.dstorage.utils.requests.Request;
 import itmo.escience.dstorage.utils.responses.Response;
 import java.io.File;
+import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -42,7 +43,7 @@ public class StorageTest {
     /**
      * Test of uploadFile method, of class Storage.
      */
-    @Test
+    //@Test
     public void testUploadFile() {
         System.out.println("uploadFile");
         File file = null;
@@ -58,11 +59,46 @@ public class StorageTest {
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
+    /**
+     * Test of uploadFile method, of class Storage.
+     */
+    //@Test
+    public void testSpeedLevel() {
+        System.out.println("SpeedTest Levels");
+        String file = "C:/temp/data2";
+        long t=(new Date()).getTime();
+        String storageFilename = "/test-"+Long.toString(t);
+        long size = 0L;
+        int reserv = 0;
+        String tag = "";
+        StorageLevel level0 = StorageLevel.HDD;
+        StorageLevel level1 = StorageLevel.SSD;
+        StorageLevel level2 = StorageLevel.MEM;
+        Storage instance = null;
+        Response expResult = null;
+        long len=new File(file).length();
+        Response result0 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level0.name(), len, reserv, tag, level0.getNum());
+        Response result1 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level1.name(), len, reserv, tag, level1.getNum());
+        Response result2 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level2.name(), len, reserv, tag, level2.getNum());
+        long time=new Date().getTime();
+        long result3=storage.downloadFileAsStream(file+"-0", storageFilename+"-lvl"+level0.name(), level0.getNum() );
+        System.out.println("HDD time:"+((new Date()).getTime()-time)+" "+result3);
+        time=new Date().getTime();
+        long result4=storage.downloadFileAsStream(file+"-1", storageFilename+"-lvl"+level1.name(), level1.getNum() );
+        System.out.println("SSD time:"+((new Date()).getTime()-time)+" "+result4);
+        time=new Date().getTime();
+        long result5=storage.downloadFileAsStream(file+"-2", storageFilename+"-lvl"+level2.name(), level2.getNum() );
+        System.out.println("RAM time:"+((new Date()).getTime()-time)+" "+result5);
+        
+        //assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        //fail("The test case is a prototype.");
+    }
 
     /**
      * Test of downloadFile method, of class Storage.
      */
-    @Test
+    //@Test
     public void testDownloadFile() {
         System.out.println("downloadFile");
         String filename = "";
@@ -82,37 +118,36 @@ public class StorageTest {
     @Test
     public void testGetMetaDataByName() {
         System.out.println("getMetaDataByName");
-        String name = "";
-        Storage instance = null;
+        String name = "/meta/bar.emf";
         Response expResult = null;
-        Response result = instance.getMetaDataByName(name);
+        Response result = storage.getMetaDataByName(name);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     /**
      * Test of getMetaDataByName method, of class Storage.
      */
-    @Test
+    //@Test
     public void testMoveFileLevelByName() {
         System.out.println("moveFileLevelByName");
         String name = "/13/bar.emf";
         Storage instance = new Storage("127.0.0.1","8084","564b3c550046b23291e28097");
-        Response expResult = null;
+        boolean expResult = true;
         //(String name,String host,StorageLevel lvlfrom,StorageLevel lvlto){
         String host="127.0.0.1";
         StorageLevel lvlfrom=StorageLevel.HDD;
         StorageLevel lvlto=StorageLevel.SSD;
         Response result = instance.moveFileLevelByName(name,host,lvlfrom,lvlto);
         System.out.println("moveFileLevelByName result:"+result.toString());
-        assertEquals(expResult, result);
+        assertEquals(expResult, result.getStatus());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     /**
      * Test of getMetaDataByName method, of class Storage.
      */
-    @Test
+    //@Test
     public void testMoveFileByName() {
         System.out.println("moveFileByName");
         //String name = "";

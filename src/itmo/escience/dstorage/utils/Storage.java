@@ -102,7 +102,42 @@ public class Storage {
         }                
         return new Response(agentResponse);
     }
-    
+    public long downloadFileAsStream(String filename,String storageFilename,int level){
+        //communicate with Core
+        DownloadRequest request=new DownloadRequest();
+        request.setStorageLevel(level);       
+        request.setName(storageFilename);
+        DownloadResponse response=(DownloadResponse)execute(request);
+        if (!response.getStatus()){
+            return 0L;
+        }
+        if(response.getLevel()!=level)
+            Logger.getLogger(Storage.class.getName()).info("Level from core the different as desired. Desired:"+level+" Returned:"+response.getLevel());
+        //communicate with Agent
+        AgentRequestDownload agentRequest=new AgentRequestDownload((DownloadResponse)response);
+        //agentRequest.setStorageLevel(resp);
+        long totalReaded=0L;
+        AgentResponse agentResponse=agentRequest.execute();
+        InputStream is=agentRequest.getFileStream();
+        OutputStream outStream;             
+        try {
+            //outStream = new OutputStream(filename);        
+            int intBytesRead=0;
+            byte[] bytes = new byte[4096];
+            while ((intBytesRead=is.read(bytes))!=-1)
+                totalReaded+=(long)intBytesRead;
+            //    outStream.write(bytes,0,intBytesRead);
+            //outStream.flush();
+            //outStream.close();
+            is.close();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);
+        }                
+        agentRequest.close();
+        return totalReaded;
+    }
     public Response execute(Request request){
         request.secid=this.secid;
         HttpConn httpconn = new HttpConn();
