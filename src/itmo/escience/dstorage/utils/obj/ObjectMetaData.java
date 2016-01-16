@@ -58,6 +58,7 @@ public class ObjectMetaData {
     public void setVersion(long ver){this.version=ver;}
     public void setState(long st){this.state=st;}
     public void setAgents(Map<String,List<Long>> ips){this.agents=ips;}
+    public Map<String,List<Long>> getAgents(){ return this.agents; }
     public void setDefaultCT(String ct){this.defaultCT=ct;}
     
     public ObjectMetaData(){
