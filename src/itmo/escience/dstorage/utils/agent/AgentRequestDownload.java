@@ -76,7 +76,7 @@ public class AgentRequestDownload {
             if(this.storageLevel!=-2)httpAgent.setHeader("StorageLevel", Integer.toString(this.storageLevel));
             httpAgent.connect();
             this.fileInputStream=httpAgent.getStreamResponse();
-            //response=new AgentResponse(httpAgent.getHttpResponse());
+            response=new AgentResponse(httpAgent.getHttpResponse());
             //httpAgent.close();
         } catch (UnknownHostException ex) {
             Logger.getLogger(Storage.class.getName()).log(Level.SEVERE, null, ex);
