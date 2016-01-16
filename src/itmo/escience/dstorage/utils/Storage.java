@@ -5,6 +5,7 @@ import itmo.escience.dstorage.utils.agent.AgentRequestUpload;
 import itmo.escience.dstorage.utils.agent.AgentResponse;
 import itmo.escience.dstorage.utils.enums.StorageLevel;
 import itmo.escience.dstorage.utils.network.HttpConn;
+import itmo.escience.dstorage.utils.requests.CopyLevelRequest;
 import itmo.escience.dstorage.utils.requests.DownloadRequest;
 import itmo.escience.dstorage.utils.requests.MetadataRequest;
 import itmo.escience.dstorage.utils.requests.MoveFileRequest;
@@ -168,6 +169,14 @@ public class Storage {
     }
     public Response moveFileLevelByName(String name,String host,StorageLevel lvlfrom,StorageLevel lvlto){
         MoveLevelRequest request=new MoveLevelRequest();        
+        request.setName(name);
+        request.setHost(host);
+        request.setLvlFrom(lvlfrom);
+        request.setLvlTo(lvlto);        
+        return execute(request);
+    }
+    public Response copyFileLevelByName(String name,String host,StorageLevel lvlfrom,StorageLevel lvlto){
+        CopyLevelRequest request=new CopyLevelRequest();        
         request.setName(name);
         request.setHost(host);
         request.setLvlFrom(lvlfrom);

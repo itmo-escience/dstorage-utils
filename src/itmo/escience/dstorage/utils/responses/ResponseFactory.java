@@ -19,6 +19,7 @@ public class ResponseFactory {
                 case AGENTPUT: return new UploadResponse(response);
                 case GET_METADATA: return new MetadataResponse(response);
                 case MVLVL: return new Response(response);
+                case CPLVL: return new Response(response);    
                 case MVFILE: return new Response(response);
                 case LIST:
                 default :throw new RuntimeException("Unknown storage action type ");
