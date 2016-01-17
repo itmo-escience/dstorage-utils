@@ -47,7 +47,9 @@ public class ObjectMetaData {
     public void setOwner(String ow){this.owner=ow;}
     public void setModified(String mod){this.modified=mod;}
     public void setObjID(String id){this.id=id;}
+    public String getObjID(){ return id;}
     public void setSize(long s){this.size=s;}
+    public long getSize(){ return this.size;}
     public void setTime(String time){this.time=time;}
     public void setCreator(String creator){this.creator=creator;}
     public void setBackupLevel(long lvl){this.backupLevel=lvl;}
