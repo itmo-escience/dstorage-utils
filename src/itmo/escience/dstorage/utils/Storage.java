@@ -27,6 +27,7 @@ import java.io.OutputStream;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 import javax.swing.JOptionPane;
 import org.json.simple.JSONObject;
 //import client.HttpConn;
@@ -44,7 +45,7 @@ public class Storage {
     public String getStorageURI(){
         return address+":"+port;
     }
-    public Response uploadFile(File file,String storageFilename,long size,int reserv,String tag,int level){
+    public Response uploadFile(File file, String storageFilename, int reserv, String tag, int level){
         //communicate with Core
         UploadRequest request=new UploadRequest();
         request.setReserv(reserv);
@@ -69,7 +70,29 @@ public class Storage {
         AgentResponse agentResponse=agentRequest.execute();            
         return new Response(agentResponse);
     }
-    public Response downloadFile(String filename,String storageFilename,int level){
+    
+    public Response uploadStream(InputStream stream, String storageFilename, int size, 
+            int reserv, String tag, int level){
+        //communicate with Core
+        UploadRequest request=new UploadRequest();
+        request.setReserv(reserv);
+        request.setTag(tag);
+        request.setStorageLevel(level);       
+        request.setFileSize(size);
+        request.setName(storageFilename);
+        Response response=execute(request);
+        if (!response.getStatus()){
+            return response;
+        }
+        //communicate with Agent
+        AgentRequestUpload agentRequest=new AgentRequestUpload((UploadResponse)response);
+        agentRequest.setStream(stream);
+        agentRequest.setStorageLevel(level);
+        AgentResponse agentResponse=agentRequest.execute();            
+        return new Response(agentResponse);
+    }
+    
+    public Response downloadFile(String filename, String storageFilename, int level){
         //communicate with Core
         DownloadRequest request=new DownloadRequest();
         request.setStorageLevel(level);       

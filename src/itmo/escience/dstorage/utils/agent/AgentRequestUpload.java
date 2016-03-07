@@ -27,7 +27,7 @@ public class AgentRequestUpload {
     private StorageMethod method=StorageMethod.PUT;
     private String sign;
     private String ticket;
-    private FileInputStream fis;
+    private InputStream fis;
     private StorageActionType type=StorageActionType.AGENTPUT;
     private String host;
     private int port;
@@ -51,7 +51,7 @@ public class AgentRequestUpload {
     public void setStorageLevel(int lvl){
         this.storageLevel=lvl;
     }
-    public void setStream(FileInputStream fis){
+    public void setStream(InputStream fis){
         this.fis=fis;
     }
     private void parseUri(String uri){

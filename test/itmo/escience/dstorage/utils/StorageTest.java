@@ -54,7 +54,7 @@ public class StorageTest {
         int level = 0;
         Storage instance = null;
         Response expResult = null;
-        Response result = instance.uploadFile(file, storageFilename, size, reserv, tag, level);
+        Response result = instance.uploadFile(file, storageFilename, reserv, tag, level);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
@@ -77,9 +77,9 @@ public class StorageTest {
         Storage instance = null;
         Response expResult = null;
         long len=new File(file).length();
-        Response result0 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level0.name(), len, reserv, tag, level0.getNum());
-        Response result1 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level1.name(), len, reserv, tag, level1.getNum());
-        Response result2 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level2.name(), len, reserv, tag, level2.getNum());
+        Response result0 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level0.name(), reserv, tag, level0.getNum());
+        Response result1 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level1.name(), reserv, tag, level1.getNum());
+        Response result2 = storage.uploadFile(new File(file), storageFilename+"-lvl"+level2.name(), reserv, tag, level2.getNum());
         long time=new Date().getTime();
         long result3=storage.downloadFileAsStream(file+"-0", storageFilename+"-lvl"+level0.name(), level0.getNum() );
         System.out.println("HDD time:"+((new Date()).getTime()-time)+" "+result3);
